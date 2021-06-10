@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/people.jpg') }}');
+            }
+            h1 {
+                text-align: center;
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{  message }}
+        </div>
+    {% endfor %}
+
+    <h1  style=" background-color: white;" >Liste des demandeurs</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">profil</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Accepter</th>
+            <th scope="col">Refuser</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for demandeur in demandeurs %}
+            <tr id="zoom">
+                <th scope="row"><a href="{{ path('etudiant_show',{id: demandeur.etudiant.id} ) }}" >  <img src=" {{ '/uploads/' ~ demandeur.etudiant.imageEmp }}  " id="zoom" height="100" width="100"  style="animation: backwards" alt="Pas d'image"> </a></th>
+                <td>{{ demandeur.etudiant.nom }}</td>
+                <td>{{ demandeur.etudiant.prenom }}</td>
+                <td> <a class="text-success"  href="{{ path('event.accepte.demandeur', {id: demandeur.id , id1: event.id }) }}">
+                        <span class="iconify" data-icon="ant-design:user-add-outlined" data-inline="false"></span></a></td>
+                <td>
+                    <a class="text-danger"  href="{{ path('event.delete.demandeur', {id: demandeur.id , id1: event.id }) }}" >
+                        <span  class="iconify" data-icon="ant-design:user-delete-outlined" data-inline="false"></span></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

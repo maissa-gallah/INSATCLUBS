@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            max-height: 900px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+        }
+
+        .title {
+            color: grey;
+            font-size: 18px;
+        }
+        #contact {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        #card {
+            text-decoration: none;
+            font-size: 22px;
+            color: black;
+        }
+
+        button:hover, a:hover {
+            opacity: 0.7;
+        }
+        body{
+            background-image: url({{ asset("bg/proff.jpg") }});
+        }
+
+    </style>
+    </head>
+    <body>
+
+<h2 style="text-align:center"></h2>
+
+<div class="card">
+    <div class="content">
+        <img src="{{'/uploads/' ~ img}}"  alt="Impossible de détécter la photo" width="895" height="400">
+    </div>
+    <h1>{{ nom }} {{ prenom }}</h1>
+    <a href="http://www.insat.rnu.tn/Fr/accueil_46_34"><i class="fa fa-dribbble">INSAT<span class="iconify" data-icon="icons8:student" data-inline="false"></span><i></a>
+    <p class="title">Date de naissance:{{ date }}</p>
+    <p class="title">Numéro de la carte étudiant:{{ num }}</p>
+
+    <div id ="card"style="margin: 24px 0;">
+
+    </div>
+   <p class="title"> <input value="{{ email }}" id="myInput" readonly></p>
+    <button class="btn btn-outline-dark"  onclick="myFunction()" id="myInput">copier<span class="iconify" data-icon="bx:bx-copy-alt" data-inline="false"></span></button>
+
+</div>
+<script>
+    function myFunction() {
+        var copyText = document.getElementById("myInput");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        alert("Copied the text");
+    }
+</script>
+
+{% endblock %}

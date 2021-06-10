@@ -1,0 +1,22 @@
+{% block recaptcha_submit_widget %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer>
+   </script>
+    <script src="https://code.iconify.design/1/1.0.5/iconify.min.js"></script>
+
+    <script>function {{ id }}RecaptchaSubmit(token)
+        {var elem= document.getElementById('{{ id }}')
+        while (elem.parentElement !==null)
+        {if (elem.tagName === 'FORM'){
+            elem.submit()
+            break
+        }
+        elem=elem.parentElement
+
+        }
+
+        }
+    </script>
+    {% set label=button %}
+    {% set attr=attr | merge ({class: 'g-recaptcha btn btn-outline-success float-right','data-sitekey': key, 'data-callback': id ~ 'RecaptchaSubmit' }) %}
+{% block submit_widget %}{% endblock %}
+{% endblock %}

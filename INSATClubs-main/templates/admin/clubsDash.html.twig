@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <canvas id="pie-chart" width="800" height="450"></canvas>
+    <canvas id="line-chart" width="800" height="450"></canvas>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset("/charts/Chart.min.js") }}"></script>
+    <script>
+
+        var t1 = [];
+        var t2=[];
+        var t3 = [];
+        {% for club in clubs %}
+        t1.push("{{club.nom }}");
+        t2.push({{club.event | length |json_encode()|raw}});
+        t3.push({{club.etudiant | length |json_encode()|raw}});
+        {% endfor %}
+        new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: t1,
+                datasets: [
+                    {
+                        data: t2,
+                        label: "Nombre des événements",
+                        borderColor: "#8e5ea2",
+                        fill: false
+                    }, {
+                        data: t3,
+                        label: "Nombre des abonnés",
+                        borderColor: "#3cba9f",
+                        fill: false
+                    },
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Nombre des événements et des abonnés par club'
+                }
+            }
+        });
+
+
+        $x1=0;$x2=0;$x3=0;$x4=0;$x5=0;$x6=0;$x7=0;$x8=0;$x9=0;
+        {% for club in clubs %}
+        {% if club.domaine =="artistique" %}
+        $x1=$x1+1;
+        {% endif %}
+        {% if club.domaine =="automatique" %}
+        $x2=$x2+1;
+        {% endif %}
+        {% if club.domaine =="robotique" %}
+        $x3=$x3+1;
+        {% endif %}
+        {% if club.domaine =="informatique" %}
+        $x4=$x4+1;
+        {% endif %}
+        {% if club.domaine =="volontaire" %}
+        $x5=$x5+1;
+        {% endif %}
+        {% if club.domaine =="differentDomaine" %}
+        $x6=$x6+1;
+        {% endif %}
+        {% if club.domaine =="annimation" %}
+        $x7=$x7+1;
+        {% endif %}
+        {% if club.domaine =="press" %}
+        $x8=$x8+1;
+        {% endif %}
+        {% if club.domaine =="chimie" %}
+        $x9=$x9+1;
+        {% endif %}
+        {% endfor %}
+        new Chart(document.getElementById("pie-chart"), {
+            type: 'pie',
+            data: {
+                labels: ["artistique", "automatique", "robotique", "informatique", "volontaire","differentsDomaines","annimation","press","chimie"],
+                datasets: [{
+                    label: "nombre des clubs",
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#74992e","#bbff00","#11ffeeff","#777799"],
+                    data: [$x1,$x2,$x3,$x4,$x5,$x6,$x7,$x8,$x9]
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Classification des clubs selon domaine',
+                    backgroundColor: "#c45850"
+                }
+            }
+        });
+    </script>
+{% endblock %}

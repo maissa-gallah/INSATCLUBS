@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/peoples.png') }}');
+            }
+            h1 {
+                text-align: center;
+            }
+             .zoom:hover {
+                 -ms-transform: scale(1.1); /* IE 9 */
+                 -webkit-transform: scale(1.1); /* Safari 3-8 */
+                 transform: scale(1.1);
+             }
+
+        </style>
+    {% endblock %}
+{% block body %}
+    {% for label, messages in app.flashes(['success', 'danger']) %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <a class="btn btn-outline-dark btn-lg" style="float: right" type="botton" href="{{ path('event.create') }}" >
+        Ajouter un événement
+    </a>
+    <h1 style= "background-color: white;">Liste des événements</h1>
+    {% for event in events %}
+        <div class="media zoom" style="border: 2px solid rgb(80,80,80);margin:10px;padding: 15px;border-radius: 5% 8% 13% 3%;background-color: white">
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{{ path('event.show',{id:event.id}) }}">
+                        {{ event.title }}
+                    </a>
+                    <small style="font-size:small"><i>Posté le : {{ event.createdAt|date('d/m/Y') }}</i></small></h4>
+                <em>{{ event.description }}</em><br>
+                <a class="text-info" href="{{ path('event.update', {id: event.id} ) }}">
+                    Modifier
+                </a>&ensp;
+                <a class="text-danger" href="{{ path('event.delete', {id: event.id} ) }}">
+                    Delete
+                </a>&ensp;
+                <a class="text-success" href="{{ path('event.mysubscribers', {id: event.id} ) }}">
+                    Subscribers
+                </a>&ensp;
+                {% if event.access=="Private" %}
+                    <a class="text-success" href="{{ path('event.mydemandeurs', {id: event.id} ) }}">
+                        Demandeurs
+                    </a>&ensp;
+                {% endif %}
+                <a class="text-success" href="{{ path('event.mysponsors', {id: event.id} ) }}">
+                    Sponsors
+                </a>
+            </div>
+            {% if event.image %}
+                <div class="media-right media-middle">
+                    <img src="{{ '/uploads/' ~ event.image  }}" class="media-object" style="width:200px">
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}

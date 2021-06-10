@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/people.jpg') }}');
+            }
+            h1 {
+                text-align: center;
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+
+    <h1  style=" background-color: white;">Liste des étudiants</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">profil</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Nom</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for etudiant in etudiants %}
+            <tr id="zoom">
+                <th scope="row"><a href="{{ path('etudiant_show',{id:etudiant.id}) }}" >  <img src=" {{ '/uploads/' ~ etudiant.imageEmp }}  " id="zoom" height="100" width="100"  style="animation: backwards"> </a></th>
+                <td>{{ etudiant.nom }}</td>
+                <td>{{ etudiant.prenom }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

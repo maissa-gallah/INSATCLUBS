@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('/bg/ev.jpg') }}');
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+
+<link rel="stylesheet" href="{{ asset("/bootstrap.min.css") }}">
+<div class="align-content-center">
+    {{ form_start(form) }}
+    <div class="jumbotron" style="background-color: white">
+        <div class="align-content-center"><h1>Inscrivez-vous!!<span class="iconify" data-icon="el:paper-clip" data-inline="false"></span></h1></div>
+        <div class="form-group">
+            {{ form_row(form.nom, { 'label': 'Donnez votre nom : ' ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.prenom, { 'label': "Donnez votre prénom : " ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.email, { 'label': "Donner votre email : " ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        {{ form_row(form.dataDeNaissance, { 'label': "Donnez votre date de naissance: " })}}
+        <div class="form-group">
+            {{ form_row(form.NumeroDeLaCarteEtudiant, { 'label': "Donnez le numéro de votre carte étudiant : "} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.password, { 'label': "Donnez votre mot de passe : "} ) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.imageEmp, { 'label': "Donnez une image qui servira comme étant votre photo de profil: " ,'attr': {'class': 'form-control-file'}}) }}
+        </div>
+        <div style="float: right">
+            {% if file_uri is defined and file_uri is not null %}
+                <img src="{{ file_uri }}" alt="" class="img img-responsive img-preview thumbnail"/>
+            {% endif %}
+        </div>
+        <p>En cliquant sur le bouton d'inscription, vous acceptez <a href="{{ path("termes") }}" class="text-success" target="_blank">les Conditions générales d'utilisation</a> de INSATClubs. </p>
+        <br>
+
+        <div>
+            {% set formHtml %}
+                {{ form_widget(form.Annuler, { 'label': 'Annuler [linkk][/linkk]' }) }}
+            {% endset %}
+            {{ formHtml|replace({'[linkk]': '<span class="iconify" data-icon="topcoat:cancel" data-inline="false">', '[/linkk]': '</span>'})|raw }}
+            {% set formHtml %}
+                {{ form_row(form.captcha)}}
+            {% endset %}
+            {{ formHtml|replace({'[link]': '<span class="iconify" data-icon="bi:pencil-square" data-inline="false">', '[/link]': '</span>'})|raw }}
+        </div>
+    {{ form_rest(form) }}
+
+    {{ form_end(form) }}
+        {% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/88.jpg') }}');
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+    {{ form_start(form) }}
+    <div class="jumbotron" style="background-color: white">
+        <h1>
+            Modification de votre compte!!!<span class="iconify" data-icon="ic:round-autorenew" data-inline="false"></span>
+        </h1>
+        <div class="form-group">
+            {{ form_row(form.title, { 'label': 'Donner le titre : ' ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.category, { 'label': "Donner la catégorie : " ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.description, { 'label': "Donner une bréve description : " ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.place, { 'label': "Donner le lieu : " ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.start_time, { 'label': "Donner la date de début : "} ) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.end_time, { 'label': "Choisir la date de fin : "} ) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.access, { 'label': "Choisir le mode d'accés : " ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.image, { 'label': "Attacher une image : " ,'attr': {'class': 'form-control-file'}}) }}
+        </div>
+        {{ form_row(form.save, { 'label': 'Sauvegarder' }) }}
+        <br>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

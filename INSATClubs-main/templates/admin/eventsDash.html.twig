@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <canvas id="line-chart" width="800" height="450"></canvas>
+    <canvas id="bar-chart-grouped" width="800" height="450"></canvas>
+    <canvas id="doughnut-chart" width="800" height="450"></canvas>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset("/charts/Chart.min.js") }}"></script>
+    <script>
+        var dd1= ["Private","Public"];
+        var dd2 =[]; dd2["Public"] = dd2["Private"]=0;
+
+        var tab1 = [];
+        var tab2=[];
+        var tab3 = [];
+
+        var data1 =[];
+        var datas=[];
+        var labels5 = ["January",
+            "February",
+            "March" ,
+            "April" ,
+            "May" ,
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"];
+        for (i = 0; i < labels5.length; i++) {
+            datas[ labels5[i] ]= 0 ;
+        }
+        {% for event in events %}
+        var month = "{{event.createdAt| date("F") }}";
+        datas[month] +=1 ;
+        var access= "{{event.access}}";
+        dd2[access]  += 1 ;
+        tab1.push("{{event.title }}");
+        tab2.push({{event.etudiant | length |json_encode()|raw}});
+        tab3.push({{event.comment | length |json_encode()|raw}});
+        {% endfor %}
+        for (var key in datas) {
+            data1.push(datas[key]);
+        }
+        createLineChart(labels5,data1);
+        function createLineChart(x,y) {
+            new Chart(document.getElementById("line-chart"), {
+                type: 'line',
+                data: {
+                    labels: x,
+                    datasets: [{
+                        data: y,
+                        label: "Evénements",
+                        borderColor: "#3e95cd",
+                        fill: true
+                    },
+                    ]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Les événements créés en 2020 par mois '
+                    }
+                }
+            });
+        }
+        var dd21 =[];
+        for (var key in dd2) {
+            dd21.push(dd2[key]);
+        }
+        new Chart(document.getElementById("doughnut-chart"), {
+            type: 'doughnut',
+            data: {
+                labels: dd1,
+                datasets: [
+                    {
+                        label: "évenements",
+                        backgroundColor: ["#3cba9f","#c45850"],
+                        data: dd21
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Nombre des événements selon l'accès"
+                }
+            }
+        });
+
+        new Chart(document.getElementById("bar-chart-grouped"), {
+            type: 'bar',
+            data: {
+                labels: tab1,
+                datasets: [
+                    {
+                        label: "Comment",
+                        backgroundColor: "#3e95cd",
+                        data: tab3
+                    }, {
+                        label: "Abonné",
+                        backgroundColor: "#8e5ea2",
+                        data: tab2
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Nombre des commentaires et des abonnés '
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

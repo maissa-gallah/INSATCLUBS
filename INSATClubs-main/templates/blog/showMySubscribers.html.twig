@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/people.jpg') }}');
+            }
+            h1 {
+                text-align: center;
+            }
+            #zoom:hover {
+                -ms-transform: scale(1.1); /* IE 9 */
+                -webkit-transform: scale(1.1); /* Safari 3-8 */
+                transform: scale(1.1);
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+
+    <h1                style= "background-color: white;">Liste de mes abonnés</h1>
+
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">profil</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for etudiants in etudiants %}
+                    <tr id="zoom">
+                        <th scope="row"><a href="{{ path('etudiant_show',{id:etudiants.id}) }}" >  <img src=" {{ '/uploads/' ~ etudiants.imageEmp }}  " id="zoom" height="100" width="100"  style="animation: backwards"> </a></th>
+                        <td>{{ etudiants.nom }}</td>
+                        <td>{{ etudiants.prenom }}</td>
+                        <td> <a  href="{{ path('unsubscribeClub_etudiant', {id: etudiants.id} ) }}"><span class="iconify" data-icon="mdi:delete"   data-inline="false"></span></a>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+{% endblock %}

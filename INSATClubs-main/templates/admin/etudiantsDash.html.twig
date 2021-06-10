@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <canvas id="polar-chart" width="800" height="450"></canvas>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset("/charts/Chart.min.js") }}"></script>
+    <script>
+
+     var datasa=[];
+     var labelsA = [];
+     {% for etudiant in etudiants %}
+     var annee = {{ etudiant.datenaissance | date("Y") }} ;
+     if(annee in datasa)
+         datasa[annee] +=1 ;
+     else { labelsA.push(annee) ; datasa[annee]=1;}
+     {% endfor %}
+     function getRandomColor() {
+         var letters = '0123456789ABCDEF';
+         var color = '#';
+         for (var i = 0; i < 6; i++) {
+             color += letters[Math.floor(Math.random() * 16)];
+         }
+         return color;
+     }
+     var color=[];
+     for (i = 0; i < labelsA.length; i++) {
+         color.push(getRandomColor()) ;
+     }
+     var data11=[];
+     for (var keya in datasa) {
+         data11.push(datasa[keya]);
+     }
+     new Chart(document.getElementById("polar-chart"), {
+         type: 'polarArea',
+         data: {
+             labels: labelsA.sort(),
+             datasets: [
+                 {
+                     label: "nombre selon l'age",
+                     backgroundColor:color,
+                     data: data11
+                 }
+             ]
+         },
+         options: {
+             title: {
+                 display: true,
+                 text: "Classification des etudiants selon l'age"
+             },
+
+         }
+     });
+ </script>
+{% endblock %}

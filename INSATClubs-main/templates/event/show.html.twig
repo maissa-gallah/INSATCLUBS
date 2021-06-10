@@ -1,0 +1,253 @@
+{% extends('base.html.twig') %}
+{% block stylesheets %}
+    <style xmlns="http://www.w3.org/1999/html">
+        #zoom:hover {
+            -ms-transform: scale(1.1); /* IE 9 */
+            -webkit-transform: scale(1.1); /* Safari 3-8 */
+            transform: scale(1.1);
+        }
+        .zoom:hover {
+            -ms-transform: scale(1.1); /* IE 9 */
+            -webkit-transform: scale(1.1); /* Safari 3-8 */
+            transform: scale(1.1);
+        }
+
+            body {
+                background-image:url("{{ asset('bg/doodle.jpg') }}");
+            }
+
+    </style>
+{% endblock %}
+{% set access=event.access %}
+{% block body %}
+
+
+    <div class="jumbotron" style="background-color: white">
+    <div style="float:right;margin-left: 5px">
+        <p >Posté le : {{ event.createdAt|date('d/m/Y H:i:s') }}</p>
+        {% if event.updatedAt %}
+            <p >Modifié le : {{ event.updatedAt|date('d/m/Y H:i:s') }}</p>
+        {% endif %}
+        {% if is_granted('ROLE_ETUDIANT') %}
+            {% if bool==false %}
+                <button class="btn btn-success zoom" id="bb" value="ins">
+                    S'inscrire
+                </button>
+            {% else %}
+                <button class="btn btn-danger zoom" id="bb" value="des">
+                    {% if access=="Public" %}
+                        Se désinscrire
+                    {% else %}
+                        Annuler demande
+                    {% endif %}
+                </button>
+            {% endif %}
+        {% elseif is_granted('ROLE_CLUB') %}
+            {% if event.club == app.user.club %}
+                <a class="btn btn-info " type="botton"  href="{{ path('event.update', {id: event.id} ) }}">
+                    Modifier
+                </a>
+                <a class="btn btn-danger " type="botton"  href="{{ path('event.delete', {id: event.id} ) }}">
+                    Effacer
+
+                </a>&ensp;
+            {% endif %}
+        {% endif %}
+    </div>
+    <h6>{{ event.StartTime |date('d/m H:i') }} - {{ event.EndTime |date('d/m H:i') }}</h6>
+    <h1>{{ event.title }}</h1>
+        {% if event.club %}
+            <h4>posté par <a href="{{ path("club_show", {id: event.club.id} ) }}">{{  event.club.nom }}</a></h4>
+        {% endif %}
+
+        <span class="badge badge-pill badge-secondary" id="zoom">{{ event.category }}</span>
+    <span class="badge badge-pill badge-primary" id="zoom">{{ event.access }}</span>
+        <hr>
+    <div class="row">
+        <div class="col-md-7">
+            <h6> Lieu : {{ event.place }}</h6>
+            <em>{{ event.description }}</em>
+            <br><br>
+            {% if is_granted('ROLE_CLUB') %}
+                {% if app.user.club == event.club %}
+                    <a class="btn btn-info" type="botton"  href="{{ path('event.mysponsors', {id: event.id} ) }}">
+                        Voir les sponsors
+                    </a>
+                    {% if event.access=="Private" %}
+                        <a class="btn btn-info" type="botton"  href="{{ path('event.mydemandeurs', {id: event.id} ) }}">
+                            Voir les demandeurs
+                        </a>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+            {% if not is_granted('ROLE_USER') %}
+            <button type="button" class="btn btn-info"  data-toggle="collapse" data-target="#spn">Sponsorer l'événement</button>
+            {% endif %}
+            {% if sponsorForm %}
+                <div id="spn" class="collapse"><br>
+                {{ form_start(sponsorForm) }}
+                <div class="form-group">
+                    {{ form_row(sponsorForm.nameEntreprise, { 'label': "Nom de l'entreprise : " ,'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(sponsorForm.email, { 'label': "Email : " ,'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(sponsorForm.name, { 'label': "Nom complet : " ,'attr': {'class': 'form-control'}}) }}
+                </div>
+                {{ form_row(sponsorForm.save, { 'label': 'Sauvegarder ' }) }}
+                </div>
+                {{ form_end(sponsorForm)}}
+            {% endif %}
+{% endif %}
+
+        </div>
+        {% if event.image %}
+            <div class="col-md-5">
+                <img src="{{ '/uploads/' ~ event.image  }}" width="100%">
+            </div>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="row">
+            <h3>Les commentaires</h3>
+
+            {% for comment in comments %}
+                <div class="card border-primary mb-3" id="zoom" style="max-width: 20rem;margin:10px">
+                    <div class="card-header">
+                    <a href="{{ path('etudiant_show',{id:comment.u_id})}}" style="text-decoration: none">   <img src="{{'/uploads/' ~ comment.u_image}}" alt="profile pic" width="40px" height="40px">
+                    </a>   {{comment.u_nom}} {{ comment.u_prenom }}
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <small style="float: right;margin-left: 5px">{{ comment.note }}/20</small>
+                            {% if is_granted('ROLE_CLUB') %}
+                                {% if app.user.club == event.club %}
+                            <a class="text-danger"  onclick='Deletecomment({{ comment.com_id }})' id="{{ comment.com_id }}" style="text-decoration: underline;
+">
+                                        Effacer</a>
+                                {% endif %}
+                            {% elseif is_granted('ROLE_ETUDIANT') %}
+                                    {% if app.user.etudiant.id == comment.u_id %}
+                                    <a class="text-info" href="{{ path('event.updatecomment', {id: comment.com_id} ) }}">
+                                        Modifier
+                                    </a>&ensp;
+                                        <a class="text-danger"  onclick='Deletecomment({{ comment.com_id }})' id="{{ comment.com_id }}" style="text-decoration: underline;
+">
+                                            Effacer
+                                        </a>
+                                {% endif %}
+                            {% endif %}
+                        </h6>
+                        <p class="card-text">{{ comment.content }}</p>
+                    </div>
+                    <div class="card-footer text-muted ">
+                            {% if comment.updatedAt %}
+                                <small>Modifié le : {{ comment.updatedAt|date('d/m/Y H:i:s') }}</small>
+                                {% else %}
+                                    <small>Posté le : {{ comment.createdAt|date('d/m/Y H:i:s') }}</small>
+                            {% endif %}
+                        </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p>Pas de commentaires.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="alert alert-success">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+
+                {% if not ( is_granted('ROLE_CLUB') or is_granted('ROLE_CLUB'))  %}
+                {% if commentForm %}
+                    {{ form_start(commentForm) }}
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Ajouter un commentaire!</h4>
+                            <p class="card-text">
+                            <div class="form-group">
+                                {{ form_row(commentForm.content, { 'label': "Donner le contenu : " ,'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(commentForm.note, { 'label': "Donner une note : " ,'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            {{ form_row(commentForm.save, { 'label': 'Sauvegarder ' }) }}
+                            <br>
+                            </p>
+                        </div>
+                    </div>
+                    {{ form_end(commentForm) }}
+                {% else %}
+                    <h5 class="text-center"> <a href="{{ path('app_login') }} ">Se connecter</a>
+                        ou bien  <a href="{{ path('etudiantinscrire') }} ">s'inscrire</a> pour ajouter des commentaires! </h5>
+                {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function Deletecomment(idd){
+            var id=idd;
+            var url = '{{ path("event.deletecomment", {'id': 'comment_id'}) }}';
+            url = url.replace("comment_id", idd);
+            $(document).ready(function gettingnotif()
+            {$.ajax({
+
+                url: url,
+
+                success: function (data) {
+                    a = document.getElementById(idd);
+                    a.parentNode.parentNode.parentNode.remove();
+                    $(".alert-success").append("<P>Vous avez effacé votre commentaire");
+
+
+                }})})}
+
+       {#setInterval(function update () {#}
+       {#    $(document).ready(function gettingcomments()#}
+       {#    {$.ajax({#}
+
+       {#        url: "{{ url('notif.showcomments',{id:event.id}) }}",#}
+       {#        success: function () {#}
+
+       {#        }#}
+       {#    })})},5000)#}
+</script>
+    <script>
+
+        let ins =document.getElementById('bb');
+        let ac='{{access}}';
+        jQuery(document).ready(function() {
+            jQuery(ins).click(function () {
+                let url; let txt; let val;
+                if(ins.value === "ins"){
+                    url ="{{ url('event.subscribe', {id: event.id} ) }}";
+                    if(ac ==='Public'){
+                        txt = "Se désinscrire";
+                    }
+                    else{
+                        txt = "Annuler demande";
+                    }
+                    val='des';
+                }
+                else {
+                    url ="{{ url('event.unsubscribeme', {id: event.id}) }}";
+                    txt= "S'inscrire" ;
+                    val='ins';
+                }
+                ins.value=val;
+                ins.classList.toggle("btn-success");
+                ins.classList.toggle("btn-danger");
+                ins.innerText = txt;
+                jQuery.post(url);
+            });
+        });
+
+    </script>
+{% endblock %}

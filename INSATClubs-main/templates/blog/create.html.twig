@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% form_theme formClub 'bootstrap_4_layout.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/ev.jpg') }}');
+            }
+        </style>
+    {% endblock %}
+{%  block body %}
+
+    <br>
+    <br>
+        <div class="jumbotron" style="background-color: white">
+            <h1>
+                Création d'un club !
+            </h1>
+    {{ form_start(formClub) }}
+    {{ form_row(formClub.nom,{'attr':{'placeholder':"nom du club"}}) }}
+    {{ form_row(formClub.email,{'attr':{'placeholder':"@Email"}}) }}
+    {{ form_row(formClub.domaine,{'attr':{'placeholder':"domaine"}}) }}
+    {{ form_row(formClub.description,{'attr':{'placeholder':"description"}}) }}
+    {{ form_row(formClub.detail,{'attr':{'placeholder':"detail"}}) }}
+    {{ form_row(formClub.imageEmp,{'attr':{'placeholder':"Emplacement image"}}) }}
+    {{ form_row(formClub.password) }}
+    <p>En cliquant sur le bouton d'inscription, vous acceptez <a href="{{ path("termes") }}" class="text-success" target="_blank">les Conditions générales d'utilisation</a> de INSATClubs. </p>
+
+            {% set formHtml %}
+                {{ form_widget(formClub.Annuler, { 'label': 'Annuler [linkk][/linkk]' }) }}
+            {% endset %}
+            {{ formHtml|replace({'[linkk]': '<span class="iconify" data-icon="topcoat:cancel" data-inline="false">', '[/linkk]': '</span>'})|raw }}
+            {% set formHtml %}
+                {{ form_row(formClub.captcha)}}
+            {% endset %}
+            {{ formHtml|replace({'[link]': '<span class="iconify" data-icon="bi:pencil-square" data-inline="false">', '[/link]': '</span>'})|raw }}
+        </div>
+    {{ form_rest(formClub) }}
+
+    {{ form_end(formClub) }}
+        </div>
+
+{% endblock %}
