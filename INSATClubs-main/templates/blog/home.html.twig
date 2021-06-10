@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/tech.jpg') }}');
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+    <div class="container-fluid">
+<br>
+    <br>
+        {% if form %}
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        {{ form_widget(form.search, { 'attr':  {
+                            'class': 'form-control',
+                            'placeholder': 'Rechercher les clubs'
+                        }}) }}
+                    </div>
+                </div>
+                <div class="col-2">
+                    {{ form_row(form.submit, { 'label': 'Rechercher' }) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        {% endif %}
+        <h1 class="text-center"
+            style="background-color: white"> Bienvenu dans notre site  {{ title }}</h1>
+        <br>
+        <div class="row">
+            <div class="col-sm">
+       <div class="jumbotron" style="background-color: white">
+        <h1 class="display-4">Différents  domaines !</h1>
+
+           <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"differentsDomaines"}) }}"  role="button">
+               <img src="{{ asset("/different domaine.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+           </a>
+        <hr class="my-4">
+        <p> les clubs de l'INSAT qui  visent à accomplir la formation des futurs ingénieurs à travers les applications dans des differents domaines.</p>
+        <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"differentDomaine"}) }}" role="button">voir plus des clubs</a>
+       </div>
+            </div>
+            <div class="col-sm">
+                <div class="jumbotron" style="background-color: white">
+                    <h1 class="display-4">Domaine automatique !</h1>
+
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"automatique"}) }}"  role="button">
+                        <img src="{{ asset("/domaine automatique.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                    </a>
+                    <hr class="my-4">
+                    <p> les clubs de l'INSAT qui  visent à accomplir la formation des futurs ingénieurs à travers les applications dans le domaine de l’automatique.</p>
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"automatique"}) }}" role="button">voir plus des clubs</a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm">
+                <div class="jumbotron" style="background-color: white">
+                    <h1 class="display-4">Domaine robotique !</h1>
+
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"robotique"}) }}"  role="button">
+                        <img src="{{ asset("/domaine robotique.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                    </a>
+                    <hr class="my-4">
+                    <p> les clubs de l'INSAT qui  visent à accomplir la formation des futurs ingénieurs à travers les applications dans le domaine robotique.</p>
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"robotique"}) }}" role="button">voir plus des clubs</a>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="jumbotron" style="background-color: white">
+                    <h1 class="display-4">Domaine informatique !</h1>
+
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"informatique"}) }}" role="button">
+                        <img src="{{ asset("/domaine informatique.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                    </a>
+                    <hr class="my-4">
+                    <p> les clubs de l'INSAT qui  visent à accomplir la formation des futurs ingénieurs à travers les applications dans le domaine informatique.</p>
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"informatique"}) }}" role="button">voir plus des clubs</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="jumbotron" style="background-color: white">
+                    <h1 class="display-4">Domaine artistique !</h1>
+
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"artistique"}) }}" role="button">
+                        <img src="{{ asset("/domaine artistique.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                    </a>
+                    <hr class="my-4">
+                    <p> les clubs de l'INSAT qui  visent à découvrir les arts dans chaque etudiant et les progresser.</p>
+                    <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"artistique"}) }}" role="button">voir plus des clubs</a>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="jumbotron" style="background-color: white">
+                    <h1 class="display-4">Domaine volontaire !</h1>
+
+                    <a class="btn btn-primary btn-lg " href="{{ path("club_domaine",{domaine:"volontaire"}) }}" role="button">
+                        <img src="{{ asset("/domaine volontaire.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                    </a>
+                    <hr class="my-4">
+                    <p> Les clubs dont ses activités sont axées sur le travail volontaire.</p>
+                    <a class="btn btn-primary btn-lg " href="{{ path("club_domaine",{domaine:"volontaire"}) }}" role="button">voir plus des clubs</a>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div class="jumbotron" style="background-color: white">
+                <h1 class="display-4">Domaine chimie !</h1>
+
+                <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"chimie"}) }}" role="button">
+                    <img src="{{ asset("/domaine chimie.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                </a>
+                <hr class="my-4">
+                <p> les clubs de l'INSAT qui  visent à accomplir la formation des futurs ingénieurs à travers les applications dans domaine chimie.
+                </p>
+                <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"chimie"}) }}" role="button">voir plus des clubs</a>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="jumbotron" style="background-color: white">
+                <h1 class="display-4">Domaine du press !</h1>
+
+                <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"press"}) }}" role="button">
+                    <img src="{{ asset("/domaine du press.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                </a>
+                <hr class="my-4">
+                <p> les clubs de l'INSAT qui  visent à rapporter les derniers évènements à venir ou ayant eu lieu, partager l'information et vous faire découvrir les toutes nouvelles actualités.
+                </p>
+                <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"press"}) }}" role="button">voir plus des clubs</a>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div class="jumbotron" style="background-color: white">
+                <h1 class="display-4">Domaine annimation!</h1>
+
+                <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"annimation"}) }}" role="button">
+                    <img src="{{ asset("/domaine annimation.jpg")}}" class="img-fluid img-thumbnail" alt="echec pas d'image !!!">
+                </a>
+                <hr class="my-4">
+                <p> les clubs de l'INSAT qui  visent à organiser des soirées afin d'éviter le stress .</p>
+                <a class="btn btn-primary btn-lg" href="{{ path("club_domaine",{domaine:"annimation"}) }}" role="button">voir plus des clubs</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

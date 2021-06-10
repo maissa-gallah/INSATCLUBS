@@ -1,0 +1,41 @@
+easy_admin:
+  site_name: 'INSATClubs <img src="https://symfony.com/logos/symfony_white_01.png"/>'
+  list:
+    # optionally you can define a global permission applied to all entities
+    # each entity can later override this by defining their own item_permission option
+    batch_actions: ['delete']
+  user:
+    display_name: true
+    display_avatar: true
+    name_property_path: 'email'
+  design:
+    brand_color: 'purple'
+    menu:
+      - { entity: 'User', label: 'Users', icon: 'user' }
+      -
+        label: 'Users'
+        children:
+
+          - { label: 'Les listes' }
+          - { entity: 'Club', label: 'Liste des Clubs', icon: 'user' }
+          - { entity: 'Etudiant', label: 'Liste des Etudiants ', icon: 'user' }
+          - { entity: 'Demandeur', label: 'Liste des  Demandeurs ', icon: 'user' }
+      -
+         label: 'Events'
+         children:
+          - { entity: 'Event', label: 'Liste des Evénements ', icon: 'th-list' }
+          - { entity: 'Sponsor', label: 'Liste des Sponsors ', icon: 'th-list' }
+          - { entity: 'Comment', label: 'Liste des Commentaires ', icon: 'sticky-note' }
+          - { entity: 'Notif', label: 'Liste des Notifications ', icon: 'sticky-note' }
+
+  entities:
+    # List the entity class name you want to manage
+    - App\Entity\Club
+    - App\Entity\Etudiant
+    - App\Entity\User
+    - App\Entity\Event
+    - App\Entity\Sponsor
+    - App\Entity\Demandeur
+    - App\Entity\Comment
+    - App\Entity\Notif
+

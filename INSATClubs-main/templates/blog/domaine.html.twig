@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/tech.jpg') }}');
+            }
+            #zoom:hover {
+                -ms-transform: scale(1.1); /* IE 9 */
+                -webkit-transform: scale(1.1); /* Safari 3-8 */
+                transform: scale(1.1);
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+    <section class="clubs">
+        <div class="container-fluid">
+
+            {% for club in clubs %}
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="jumbotron" style="background-color: white">
+                            <club>
+                                <h2> {{ club.nom }} </h2>
+                                <div class="content">
+                                    <img src="{{ '/uploads/' ~ club.imageEmp  }}" alt="echec pas d'image !!!" width="500" height="250">
+                                    <p> Son adresse Email : {{ club.user.email }} </p>
+                                    <p> Son domaine : {{ club.domaine }}</p>
+                                    <p> Description du club : {{ club.description }}</p>
+                                    <a href="{{path('club_show',{'id':club.id}) }}" class="btn btn-primary" id="zoom"> voir plus de detail </a>
+                                </div>
+                            </club>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </section>
+{% endblock %}

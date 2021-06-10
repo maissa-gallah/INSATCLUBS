@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+
+        <style>
+            #zoom:hover {
+                -ms-transform: scale(1.1); /* IE 9 */
+                -webkit-transform: scale(1.1); /* Safari 3-8 */
+                transform: scale(1.1);
+            }
+
+            body {
+                background-image:url('{{asset('bg/search.jpg') }}');
+            }
+            h1{
+                text-align: center;
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+    {% if events %}
+        <h1 style="background-color: white;">Evénements : </h1>
+        {% for event in events %}
+        <div class="media" id="zoom" style="border: 2px solid rgb(80,80,80);margin:10px;padding: 15px;border-radius: 5% 8% 13% 3%;background-color: white">
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{{ path('event.show',{id:event.id}) }}">
+                       {{ event.title }}
+                    </a>
+                    <small style="font-size:small"><i>Posté le : {{ event.createdAt|date('d/m/Y') }}</i></small></h4>
+                <em>{{ event.description }}</em><br>
+            </div>
+            {% if event.image %}
+                <div class="media-right media-middle">
+                    <img src="{{ '/uploads/' ~ event.image  }}" class="media-object" style="width:200px">
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% if clubs %}
+        <h1 style="background-color: white;" >Clubs :</h1>
+        {% for club in clubs %}
+        <div class="media" style="border: 2px solid rgb(80,80,80);margin:10px;padding: 15px;border-radius: 5% 8% 13% 3%;background-color: white" id="zoom">
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{{path('club_show',{'id':club.id}) }}">
+                        {{ club.nom }}
+                    </a></h4>
+                <span class="badge badge-pill badge-secondary">
+                    {{ club.domaine }} </span><br>
+                    <em>Description du club : {{ club.description }}</em><br>
+            </div>
+            {% if club.imageEmp %}
+                <div class="media-right media-middle">
+                    <img src="{{ '/uploads/' ~ club.imageEmp  }}" alt="echec pas d'image !!!" width="500" height="250">
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% endif %}
+
+{% endblock %}

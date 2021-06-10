@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url("{{ asset('bg/fun.jpg') }}");
+            }
+            h1{
+                text-align: center;
+            }
+            #zoom:hover {
+            -ms-transform: scale(1.1); /* IE 9 */
+            -webkit-transform: scale(1.1); /* Safari 3-8 */
+            transform: scale(1.1);
+        }
+</style>
+{% endblock %}
+
+{% block body %}
+
+    <h1                style= "background-color: white;">Liste des clubs</h1>
+    {% for club in clubs %}
+        <div class="media" id="zoom" style="border: 2px solid rgb(80,80,80);margin:10px;padding: 15px;border-radius: 5% 8% 13% 3%;background-color: white">
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{{ path('club_show',{id:club.id}) }}">
+                        {{ club.nom }}
+                    </a></h4>
+                <em>{{ club.description }}</em><br>
+                <a class="text-danger" href="{{ path('etudiant_unsubscribe', {id: club.id} ) }}">
+                    Desinscrire
+                </a>&ensp;
+            </div>
+            {% if club.imageEmp %}
+                <div class="media-right media-middle">
+                    <img src="{{ '/uploads/' ~ club.imageEmp  }}" class="media-object" style="width:200px">
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}

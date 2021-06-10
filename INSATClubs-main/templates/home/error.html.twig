@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+    <title>Error</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+<h1 style="margin: 10px">
+    DÉSOLÉ,<br>
+    VOUS N’AVEZ PAS L’AUTORISATION D’ACCÉDER À CETTE PAGE.
+</h1>
+{% if is_granted('ROLE_CLUB') %}
+    <a href="
+{{ path('club_show',{id:app.user.club.id}) }}" class="btn btn-outline-info" style="display: block;
+       width: 113px;
+       margin: 10px;
+    ">
+        RETOUR</a>
+{% else %} <a href="{{ path('etudiant_show',{id:app.user.etudiant.id}) }}" class="btn btn-outline-info" style="display: block;
+width: 113px;
+margin: 10px;
+">RETOUR</a>  {% endif %}
+<hr style="    border: none;
+    border-top: 5px double #333;
+    color: #333;
+    overflow: visible;
+    text-align: center;
+    height: 5px;">
+<img src="{{ absolute_url(asset('error.gif')) }}"  alt="Symfony!" style="display: block;
+  margin-left: auto;
+  margin-right: auto;
+  ">
+
+
+</body>

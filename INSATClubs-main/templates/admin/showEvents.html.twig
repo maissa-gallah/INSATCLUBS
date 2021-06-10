@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if form %}
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    {{ form_widget(form.search, { 'attr':  {
+                        'class': 'form-control',
+                        'placeholder': 'Rechercher les événements'
+                    }}) }}
+                </div>
+            </div>
+            <div class="col-2">
+                {{ form_row(form.submit, { 'label': 'Rechercher' }) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    {% endif %}
+    <h1>Liste des Events</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">profil</th>
+            <th scope="col">Catégorie</th>
+            <th scope="col">Description</th>
+            <th scope="col">Accès</th>
+            <th scope="col">Place</th>
+            <th scope="col">Club</th>
+            <th scope="col">Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <th scope="row"><a href="{{ path('event.show',{id:event.id}) }}" >  <img src=" {{ '/uploads/' ~ event.image}}  " id="zoom" height="100" width="100"  style="animation: backwards"> </a></th>
+                <td>{{ event.title }}</td>
+                <td>{{ event.category }}</td>
+                <td>{{event.description}}</td>
+                <td>{{ event.access }}</td>
+                <td>{{ event.club.nom }}</td>
+                <td> <a  href="{{ path('event.delete',{id:event.id}) }}"><span class="iconify" data-icon="mdi:delete"   data-inline="false"></span></a>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </section>
+{% endblock %}

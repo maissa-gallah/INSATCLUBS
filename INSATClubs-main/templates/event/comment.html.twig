@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/88.jpg') }}');
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+    <div class="jumbotron" style="background-color: white">
+        <h2>Modifier ton commentaire : </h2>
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_row(form.content, { 'label': 'Modifier le contenu : ' ,'attr': {'class': 'form-control'}}) }}
+            {{ form_row(form.note, { 'label': "Modifier la note : " ,'attr': {'class': 'form-control'}}) }}
+        </div>
+        {{ form_row(form.save, { 'label': 'Submit me' }) }}
+        <br>
+        {{ form_end(form) }}    </div>
+{% endblock %}

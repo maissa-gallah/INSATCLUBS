@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/notif.jpg') }}');
+                background-size: 250px;
+            }
+            h1{
+                text-align: center;
+            }
+            #zoom:hover {
+                -ms-transform: scale(1.1); /* IE 9 */
+                -webkit-transform: scale(1.1); /* Safari 3-8 */
+                transform: scale(1.1);
+            }
+        </style>
+    {% endblock %}
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{  message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">
+            {{  message }}
+        </div>
+    {% endfor %}
+        <h1                style= "background-color: white;">Notifications :</h1>
+        {% for notif in notifs %}
+            <div class="card" id="zoom" style="padding: 20px; margin: 10px">
+                <div class="card-body">
+                    <a href="{{ path('notif.remove',{id:notif.id}) }}" class="card-link float-right"><span class="iconify" data-icon="ant-design:close-outlined" data-inline="false"></span></a>
+                    <h4 class="card-title">{{ notif.title }}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted float-right">le {{ notif.createdAt | date( 'd/m/y h:m:s')}}</h6>
+                    <em class="card-text">{{ notif.description }}</em><br>
+                    {% if  notif.linkPath %}
+                    <a class="text-info card-link"  href="{{ path('event.show',{id:notif.linkPath}) }}">
+                        voir plus...
+                    </a>
+                    {% endif %}
+                </div>
+                </div>
+        {% endfor %}
+
+{% endblock %}

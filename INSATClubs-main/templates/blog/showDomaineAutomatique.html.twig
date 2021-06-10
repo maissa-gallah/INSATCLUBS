@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <section class="clubs">
+        <div class="container-fluid">
+
+            {% for club in clubs %}
+                {% if (club.domaine) is same as ("automatique" )%}
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="jumbotron">
+                                <club>
+                                    <h2> {{ club.nom }} </h2>
+                                    <div class="content">
+                                        <img src="{{ club.imageEmp | raw }}" alt="echec pas d'image !!!" width="500" height="250">
+                                        <p> Son adresse Email : {{ club.adresseEmail }} </p>
+                                        <p> Son domaine : {{ club.domaine }}</p>
+                                        <p> Description du club : {{ club.description }}</p>
+                                        <a href="{{path('blog_show',{'id':club.id}) }}" class="btn btn-primary"> voir plus de detail </a>
+                                    </div>
+                                </club>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+
+
+
+{% endblock %}

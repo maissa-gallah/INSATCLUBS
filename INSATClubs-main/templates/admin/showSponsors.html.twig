@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des Sponsors</h1>
+    {% if form %}
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    {{ form_widget(form.search, { 'attr':  {
+                        'class': 'form-control',
+                        'placeholder': 'Rechercher les sponsors'
+                    }}) }}
+                </div>
+            </div>
+            <div class="col-2">
+                {{ form_row(form.submit, { 'label': 'Rechercher' }) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    {% endif %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Nom de l'entreprise</th>
+            <th scope="col">Email</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sponsor in sponsors %}
+            <tr>
+                <td>{{ sponsor.nameEntreprise }}</td>
+                <td>{{ sponsor.email}}</td>
+                <td>{{sponsor.name}}</td>
+                <td> <a  href="{{ path('sponsor.delete',{id:sponsor.id}) }}"><span class="iconify" data-icon="mdi:delete"   data-inline="false"></span></a>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </section>
+{% endblock %}

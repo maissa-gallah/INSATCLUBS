@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% form_theme formClub 'bootstrap_4_layout.html.twig' %}
+    {% block stylesheets %}
+        <style>
+            body {
+                background-image:url('{{asset('bg/88.jpg') }}');
+            }
+        </style>
+    {% endblock %}
+{%  block body %}
+    <br>
+    <br>
+    <div class="align-content-center">
+    {{ form_start(formClub) }}
+    <div class="jumbotron" style="background-color: white" >
+        <h1>
+            Modification de votre club!!!<span class="iconify" data-icon="ic:round-autorenew" data-inline="false"></span>
+        </h1>
+    <div class="form-group">
+    {{ form_row(formClub.nom,{'attr':{'placeholder':"nom du club"}}) }}
+    </div>
+    <div class="form-group">
+    {{ form_row(formClub.email,{'attr':{'placeholder':"@Email"}}) }}
+    </div> <div class="form-group">
+    {{ form_row(formClub.domaine,{'attr':{'placeholder':"domaine"}}) }}
+</div>
+    <div class="form-group">
+    {{ form_row(formClub.description,{'attr':{'placeholder':"description"}}) }}
+    </div>
+    <div class="form-group">
+    {{ form_row(formClub.detail,{'attr':{'placeholder':"detail"}}) }}
+    </div>
+    <div class="form-group">
+    {{ form_row(formClub.imageEmp,{'attr':{'placeholder':"Emplacement image"}}) }}
+    </div>   <div class="form-group">
+    {{ form_row(formClub.password) }}
+</div>
+
+
+    <button type="reset" class="btn btn-outline-dark float-right">Annuler<span class="iconify" data-icon="entypo:cross" data-inline="false"></span></button>
+    <button type="submit" class="btn btn-outline-success float-right">  Enregistrer les modifications<span class="iconify" data-icon="dashicons:saved" data-inline="false"></span></button>
+
+
+    {{ form_end(formClub) }}
+
+{% endblock %}

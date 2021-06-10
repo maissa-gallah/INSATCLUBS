@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <canvas id="bar-chart" width="800" height="450"></canvas>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset("/charts/Chart.min.js") }}"></script>
+    <script>
+        var data2 =[ {{ users | length |json_encode()|raw }},
+            {{ etudiants | length |json_encode()|raw }},
+            {{ clubs | length |json_encode()|raw }},
+            {{ sponsors | length |json_encode()|raw }}];
+        createBarChart(data2);
+        function createBarChart(datas) {
+            new Chart(document.getElementById("bar-chart"), {
+                type: 'bar',
+                data: {
+                    labels: ["Users","Etudiants", "Clubs", "Sponsors"],
+                    datasets: [
+                        {
+                            label: "Nombre",
+                            backgroundColor: ["#3e95cd", "#54c217","#ff0016","#0ac5cc","#c45850"],
+                            data: datas
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Nombres des utilisateurs du site'
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+<style>
+body {
+background-image:url("{{ asset('bg/cashh.png') }}");
+}
+</style>
+{% endblock %}
+{% block body %}
+
+    <h1>Liste des sponsors</h1>
+    <table class="table ">
+        <thead>
+        <tr>
+            <td>Nom Entreprise</td>
+            <td>Email</td>
+            <td>Nom</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sponsor in sponsors %}
+            <tr>
+                <td>{{  sponsor.nameEntreprise }}</td>
+                <td>
+                        {{ sponsor.email }}
+                </td>
+                <td>
+                        {{ sponsor.name }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

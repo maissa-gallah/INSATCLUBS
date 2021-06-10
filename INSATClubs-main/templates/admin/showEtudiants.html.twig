@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des Etudiants</h1>
+    {% if form %}
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    {{ form_widget(form.search, { 'attr':  {
+                        'class': 'form-control',
+                        'placeholder': 'Rechercher les étudiants'
+                    }}) }}
+                </div>
+            </div>
+            <div class="col-2">
+                {{ form_row(form.submit, { 'label': 'Rechercher' }) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    {% endif %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">profil</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Email</th>
+            <th scope="col">Numéro Carte etudiant</th>
+            <th scope="col">Date de naissance</th>
+            <th scope="col">Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for etudiant in etudiants %}
+            <tr>
+                <th scope="row"><a href="{{ path('etudiant_show',{id:etudiant.id}) }}" >  <img src=" {{ '/uploads/' ~ etudiant.imageEmp }}  " id="zoom" height="100" width="100"  style="animation: backwards"> </a></th>
+                <td>{{ etudiant.nom }}</td>
+                <td>{{ etudiant.prenom }}</td>
+                <td>{{ etudiant.user.email }}</td>
+                <td>{{ etudiant.numCarteEtudiant }}</td>
+                <td>{{ etudiant.datenaissance|date('d/m/Y') }}</td>
+                <td> <a  href="{{ path('etudiant.supprimer',{id:etudiant.id}) }}"><span class="iconify" data-icon="mdi:delete"   data-inline="false"></span></a>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </section>
+{% endblock %}

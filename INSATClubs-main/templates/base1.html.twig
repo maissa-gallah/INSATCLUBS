@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% if is_granted('ROLE_CLUB') %}  {{ app.user.club.nom}}| INSATClubs
+        {% elseif is_granted('ROLE_ETUDIANT') %} {{ app.user.etudiant.nom }} {{ app.user.etudiant.prenom }}| INSATClubs
+        {% else %} INSATClubs
+        {% endif %}
+
+        {% endblock %}</title>
+    {% if is_granted("ROLE_ADMIN")%} <link rel="stylesheet" href="{{ asset("/bootstrap1.min.css") }}" >{% else %}
+        <link rel="stylesheet" href="{{ asset("/bootstrap.min.css") }}" >{% endif %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{{ asset("/bootstrap.min.js") }}" ></script>
+    <script src="https://code.iconify.design/1/1.0.5/iconify.min.js"></script>
+    {% block stylesheets %}{% endblock %}
+ <style>   /* width */
+    ::-webkit-scrollbar {
+    width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: purple;
+    border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #8c00b3;
+    }
+     #backgrounddiv{
+         background-image:url('{{asset('/logo.gif') }}');
+     }
+
+ </style>
+</head>
+<body>
+{% set i=0 %}
+{%  if is_granted('ROLE_USER') %}
+    {%  for notif in app.user.notif %}
+        {% if not notif.isRead %}
+            {% set i = i+1 %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<script>var TxtRotate = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 10) || 2000;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtRotate.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+            this.txt = fullTxt.substring(0, this.txt.length - 1);
+        } else {
+            this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 300 - Math.random() * 100;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+            delta = this.period;
+            this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+            this.isDeleting = false;
+            this.loopNum++;
+            delta = 500;
+        }
+
+        setTimeout(function() {
+            that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('txt-rotate');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-rotate');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+                new TxtRotate(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
+        document.body.appendChild(css);
+    };
+
+</script>
+{% if  is_granted('ROLE_ADMIN')==false%}
+
+<div id="backgrounddiv">
+    <a href="{{ path('home') }}">   <img src="{{ asset('/logo2.png') }}" width="150"  height="150" style="margin-left: 10%;  border-radius: 40%;
+"> </a>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,100,400" rel="stylesheet" type="text/css" />
+    <h1 style="margin-top: 0%; font-weight: 200;
+            margin: 0.4em 0;font-size: 3.5em;color: cornflowerblue; margin-right: 20%" class="float-right">This land is
+        <span
+                class="txt-rotate"
+                data-period="2000"
+                data-rotate='[ "our land of dreams", "fascinating", "beautiful", "exciting", "fun!" ]'></span>
+    </h1>
+
+</div>
+{% endif %}
+{% if is_granted('ROLE_ETUDIANT') %}
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <a class="navbar-brand" href="{{ path('etudiant_show',{id:app.user.etudiant.id})}}"><span class="iconify" data-icon="ic:round-person" data-inline="false"></span>Mon profil</a>
+        <a class="nav-link" href="{{path('notif.show')}}">Notifications <span class="badge badge-secondary" id="notifietudiant">{{ i }}</span></a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Clubs <span class="iconify" data-icon="ps:people-team" data-inline="false"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ path('etudiant_myclubs') }}">Mes Clubs<span class="iconify" data-icon="vaadin:group" data-inline="false"></span></a>
+                        <a class="dropdown-item" href="{{ path('club') }}">Voir les clubs<span class="iconify" data-icon="emojione:eyes" data-inline="false"></span></a>
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Evenements <span class="iconify" data-icon="mdi:emoticon-happy-outline" data-inline="false"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <a class="dropdown-item" href="{{ path('etudiant_myevents') }}">Mes événements<span class="iconify" data-icon="vs:party" data-inline="false"></span></a>
+                        <a class="dropdown-item" href="{{ path('event.index') }}">Voir les événements<span class="iconify" data-icon="emojione:eyes" data-inline="false"></span></a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Paramètres<span class="iconify" data-icon="bytesize:settings" data-inline="false"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <a class="dropdown-item" href={{ path('etudiant_edit') }}>Modifier mes données<span class="iconify" data-icon="jam:write" data-inline="false"></span></a>
+                        <a class="dropdown-item" href={{ path('etudiantdelete') }}>Supprimer mon compte<span class="iconify" data-icon="entypo:emoji-sad" data-inline="false"></span></a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <form class="ml-auto hidden" role="search" id="nav-search-form" method="post" action="{{ path('search') }}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Rechercher" name ="search" >&ensp;
+                            <button type="submit" class="btn btn-outline-success" ><span class="iconify" data-icon="ant-design:search-outlined" data-inline="false"></span></button>
+                        </div>
+                    </form>
+                </li>
+                &ensp;
+                <li class="nav-item">
+                    <a class="nav-link" href="{{path('app_logout')}}">Déconnexion <span class="iconify" data-icon="ant-design:logout-outlined" data-inline="false"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% elseif is_granted('ROLE_CLUB') %}
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{{ path('club_show',{id:app.user.club.id})}}"><span class="iconify" data-icon="ic:round-person" data-inline="false"></span>Mon profil</a>
+        <a class="nav-link" href="{{path('notif.show')}}">Notifications <span class="badge badge-secondary" id="notifclub">{{ i }}</span></a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href={{path('club')}}>Voir les clubs<span class="iconify" data-icon="vaadin:group" data-inline="false"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href={{path('club_subscribers')}}>Mes abonnés<span class="iconify" data-icon="fa:group" data-inline="false"></span></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Evenements <span class="iconify" data-icon="mdi:emoticon-happy-outline" data-inline="false"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                    <a class="dropdown-item" href="{{path('club_myevents')}}">Mes événements<span class="iconify" data-icon="vs:party" data-inline="false"></span></a>
+                    <a class="dropdown-item" href="{{ path('event.index') }}">Voir les événements<span class="iconify" data-icon="emojione:eyes" data-inline="false"></span></a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Paramètres<span class="iconify" data-icon="bytesize:settings" data-inline="false"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                    <a class="dropdown-item" href={{ path('club_edit') }}>Modifier mes données<span class="iconify" data-icon="jam:write" data-inline="false"></span></a>
+                    <a class="dropdown-item" href={{ path('delete') }}>Supprimer mon compte<span class="iconify" data-icon="entypo:emoji-sad" data-inline="false"></span></a>
+                </div>
+            </li>
+
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li>
+                <form class="ml-auto hidden" role="search" id="nav-search-form" method="post" action="{{ path('search') }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Rechercher" name ="search" >&ensp;
+                        <button type="submit" class="btn btn-outline-success" ><span class="iconify" data-icon="ant-design:search-outlined" data-inline="false"></span></button>
+                    </div>
+                </form>
+            </li>
+            &ensp;
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('app_logout')}}"> Déconnexion <span class="iconify" data-icon="ant-design:logout-outlined" data-inline="false"></span></a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+{% elseif is_granted("ROLE_ADMIN") %}
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="{{ path('admin_page') }}"><img src="{{ asset('/Un1LnVPq.gif') }}"></img> </a>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dashboard<span class="iconify" data-icon="el:th-list" data-inline="false"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <a class="dropdown-item" href="{{ path('dashboard.user') }}">Utilisateurs</a>
+                        <a class="dropdown-item" href="{{ path('dashboard.etudiant') }}">Etudiant</a>
+                        <a class="dropdown-item" href="{{ path('dashboard.club') }}">Clubs</a>
+                        <a class="dropdown-item" href="{{ path('dashboard.event') }}">Evènements</a>
+
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Liste des utilisateurs<span class="iconify" data-icon="bx:bxs-user-circle" data-inline="false"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <a class="dropdown-item" href="{{ path('Etudiants') }}">Liste des Etudiants</a>
+                        <a class="dropdown-item" href="{{ path('Clubs') }}">Liste des Clubs</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('Events') }}">Liste des Evenements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('Sponsors') }}">Liste des Sponsors</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto" >
+                <li>
+                    <form class="ml-auto hidden" role="search" id="nav-search-form" method="post" action="{{ path('search') }}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Rechercher" name ="search" >&ensp;
+                            <button type="submit" class="btn btn-outline-success" ><span class="iconify" data-icon="ant-design:search-outlined" data-inline="false"></span></button>
+                        </div>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{path('app_logout')}}" >Déconnexion <span class="iconify" data-icon="ant-design:logout-outlined" data-inline="false"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+{% else %}
+    <nav class="navbar navbar-expand-lg  sticky-top navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href={{path('club')}}>Voir les clubs<span class="iconify" data-icon="fa:group" data-inline="false"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('event.index') }}">Voir les événements<span class="iconify" data-icon="vs:party" data-inline="false"></span></a>
+
+        </ul>
+        <ul class="navbar-nav ml-auto" >
+            <li>
+                <form class="ml-auto hidden" role="search" id="nav-search-form" method="post" action="{{ path('search') }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Rechercher" name ="search" >&ensp;
+                        <button type="submit" class="btn btn-outline-success" ><span class="iconify" data-icon="ant-design:search-outlined" data-inline="false"></span></button>
+                    </div>
+                </form>
+            </li>
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Inscription <span class="iconify" data-icon="ps:people-team" data-inline="false"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{{ path('club_create') }}">Créer un compte club<span class="iconify" data-icon="vaadin:group" data-inline="false"></span></a>
+                    <a class="dropdown-item" href="{{ path('etudiantinscrire') }}">Créer un compte étudiant<span class="iconify" data-icon="icons8:student" data-inline="false"></span></a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('app_login')}}">Connexion <span class="iconify" data-icon="fa:sign-in" data-inline="false"></span></a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+{% endif %}
+    {% block body %}{% endblock %}
+<footer class="container">
+    <p style="text-align: center;color: white">&copy; Copyright 2020 INSATClubs</p>
+</footer>
+{% block javascripts %}{% endblock %}
+</body>
+</html>
+<script>
+    showNotificationCount({{ i }});
+
+    notifetudiant=document.getElementById("notifietudiant");
+    notifclub=document.getElementById("notifclub");
+
+    setInterval(function  loadnotifications(){
+        $(document).ready(function gettingnotif()
+        {$.ajax({
+            url: "{{ url('notif.showunread') }}" ,
+            success: function(data){
+                if(data['type']=="etudiant") {
+                    notifetudiant.innerText=data['data'];
+                    a=parseInt(data['data']);
+                    showNotificationCount(a);                    }
+                if(data['type']=="club")
+                {  notifclub.innerText=data['data'];
+                    a=parseInt(data['data']);
+                    showNotificationCount(a);}
+
+
+
+
+
+
+
+            }}
+
+        )
+        })
+    },5000);
+
+    function showNotificationCount(count) {
+        const pattern = /^\(\d+\)/;
+        if ( count == 0 || pattern.test(document.title)){
+            document.title = document.title.replace(pattern, count == 0 ? "" : "(" + count + ")");
+        }
+        else {
+            document.title = "(" + count + ")" + document.title;
+        }
+    }
+</script>
